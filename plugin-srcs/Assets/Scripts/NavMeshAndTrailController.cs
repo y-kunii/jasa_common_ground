@@ -11,9 +11,6 @@ public class NavMeshAndTrailController : MonoBehaviour
     private NavMeshAgent agent;
     private int goalListCount = 0;
     private Transform goalPoint;
-    public Transform goal1;
-    public Transform goal2;
-    public Transform goal3;
     public List<Transform> goalList;
     private Vector3 direction;
     private Vector3 diffVec;
@@ -34,9 +31,9 @@ public class NavMeshAndTrailController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        goalList.Add(goal1);
-        goalList.Add(goal2);
-        goalList.Add(goal3);
+        //goalList.Add(goal1);
+        //goalList.Add(goal2);
+        //goalList.Add(goal3);
 
         agent = GetComponent<NavMeshAgent>();
         goalPoint = goalList[goalListCount];

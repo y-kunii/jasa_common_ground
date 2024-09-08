@@ -10,7 +10,7 @@ using UnityEngine.UIElements;
 
 
 
-public class RobotController : MonoBehaviour
+public class RobotController2 : MonoBehaviour
 {
     private int goalListCount = 0;
     public Transform obstaclePoint;

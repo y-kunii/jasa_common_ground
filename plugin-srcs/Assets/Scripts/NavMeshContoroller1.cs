@@ -5,11 +5,14 @@ using UnityEngine;
 using UnityEngine.AI;
 using System.Threading.Tasks;
 
-public class NavMeshContoroller : MonoBehaviour
+public class NavMeshContoroller1 : MonoBehaviour
 {
     private NavMeshAgent agent;
     private int goalListCount = 0;
     private Transform goalPoint;
+    public Transform goal1;
+    public Transform goal2;
+    public Transform goal3;
     public List<Transform> goalList;
     private Vector3 direction;
     private Vector3 diffVec;
@@ -30,10 +33,9 @@ public class NavMeshContoroller : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //AreaController.instance.SetValue();
-        //goalList.Add(goal1);
-        //goalList.Add(goal2);
-        //goalList.Add(goal3);
+        goalList.Add(goal1);
+        goalList.Add(goal2);
+        goalList.Add(goal3);
 
         agent = GetComponent<NavMeshAgent>();
         goalPoint = goalList[goalListCount];
@@ -86,20 +88,22 @@ public class NavMeshContoroller : MonoBehaviour
         //this.transform.rotation = Quaternion.Slerp(this.transform.rotation, rot, Time.deltaTime * RotateSpeed);
 
         diffVec  = direction - this.transform.forward;
-        if (!navMotionCheckFlag)
-        {
-            if (Mathf.Abs(diffVec.z) > 0.001f)
-            {
-                //Debug.Log("角速度 " + AngularVelocity);
-                var angle2 = RotateSpeed * Time.deltaTime;
-                this.transform.rotation = Quaternion.AngleAxis(angle2, Vector3.up) * this.transform.rotation;
-            }
-            else
-            {
-                navMotionCheckFlag = true;
-                Invoke("StartNavMeshMove", 0.2f);
-            }
-        }
+        var angle2 = 40f * Time.deltaTime;
+        this.transform.rotation = Quaternion.AngleAxis(angle2, Vector3.up) * this.transform.rotation;
+        //if (!navMotionCheckFlag)
+        //{
+        //    if (Mathf.Abs(diffVec.z) > 0.001f)
+        //    {
+        //        //Debug.Log("角速度 " + AngularVelocity);
+        //        var angle2 = 40f * Time.deltaTime;
+        //        this.transform.rotation = Quaternion.AngleAxis(angle2, Vector3.up) * this.transform.rotation;
+        //    }
+        //    else
+        //    {
+        //        navMotionCheckFlag = true;
+        //        Invoke("StartNavMeshMove", 0.7f);
+        //    }
+        //}
         MovingNavMesh();
     }
     public void StartNavMeshMove()
@@ -113,7 +117,8 @@ public class NavMeshContoroller : MonoBehaviour
         {
             float dis = Vector3.Distance(goalPoint.position, this.transform.position);
             float disX = goalPoint.position.x - this.transform.position.x;
-            if (Mathf.Abs(disX) < 2.3f)
+            //if (dis < 2.9f)
+            if (Mathf.Abs(disX) < 0.9f)
             {
                 if (goalList.Count > goalListCount)
                 {
