@@ -29,12 +29,11 @@ public class RobotController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //goalList.Add(goal1);
-        //goalList.Add(goal2);
-        //goalList.Add(goal3);
         goalPoint = goalList[goalListCount];
         heading = goalPoint.position - this.transform.position;
-
+    }
+    private void SetPrimitiveObject()
+    {
         //for (int i = 0; i < goalList.Count; i++)
         //{
         //    GameObject objectCenterPoint = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -48,6 +47,65 @@ public class RobotController : MonoBehaviour
 
     // Update is called once per frame
     void Update()
+    {
+
+        RobotControllerNoObstacle();
+
+        //if (Physics.Raycast(ray, out RaycastHit hits, Mathf.Infinity))
+        //{
+//
+        //    if (hit.transform.name == goalPoint.transform.name)
+        //    {
+        //        Vector3 RobotFoward = this.transform.forward;
+        //        heading = goalPoint.position - this.transform.position;
+        //        Vector3 diffRotaion = heading.normalized - RobotFoward;
+        //        Debug.Log(Mathf.Abs(diffRotaion.x));
+        //        if (Mathf.Abs(diffRotaion.x) < 0.004f)
+        //        {
+        //            canMoveRobot = true;
+        //        }
+        //    }
+        //    //if (hitInfo.transform.name == goalPoint.Find(goalPoint.name + "CenterPoint").transform.name)
+        //    //{
+        //    //    Debug.Log(goalPoint.Find(goalPoint.name + "CenterPoint").transform.name);
+        //    //    Debug.Log(hitInfo.transform.name);
+        //    //    Debug.Log(goalPoint.transform.Find(goalPoint.name + "CenterPoint").transform.name);
+        //    //    canMoveRobot = true;
+        //    //}
+        //}
+
+        //Vector3 RobotFoward = this.transform.forward;
+        //Debug.Log(RobotFoward);
+        //Debug.Log(heading.normalized);
+        //Vector3 diffRotaion = (heading.normalized - RobotFoward)*100;
+        //if (canMoveRobot)
+        //{
+        //    this.transform.Rotate(0, 0, 0);
+        //    MoveRobotFoward();
+        //}
+        //else
+        //{
+        //    //if (diffRotaion > 0.001f)
+        //    //if (Mathf.Abs(diffRotaion.x) > 0.1f)
+        //    if (!canMoveRobot)
+        //    {
+        //        //Debug.Log(diffRotaion.x);
+        //        //Debug.Log(diffRotaion.z);
+        //        if (obstaclePoint != null)
+        //        {
+        //            //this.transform.Rotate(0, angleSpeed, 0);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        //Debug.Log(diffRotaion.x);
+        //        //Debug.Log(diffRotaion.z);
+        //        //this.transform.Rotate(0, 0, 0);
+        //        canMoveRobot = true;
+        //    }
+        //}
+    }
+    public void RobotControllerTest1()
     {
         Ray ray = new Ray(transform.position, this.transform.forward);
         Debug.DrawRay(gameObject.transform.position, this.transform.forward * 30, Color.blue, 0.01f);
@@ -137,59 +195,48 @@ public class RobotController : MonoBehaviour
             this.transform.Rotate(0, 0, 0);
             MoveRobotFoward();
         }
-        //if (Physics.Raycast(ray, out RaycastHit hits, Mathf.Infinity))
-        //{
-//
-        //    if (hit.transform.name == goalPoint.transform.name)
-        //    {
-        //        Vector3 RobotFoward = this.transform.forward;
-        //        heading = goalPoint.position - this.transform.position;
-        //        Vector3 diffRotaion = heading.normalized - RobotFoward;
-        //        Debug.Log(Mathf.Abs(diffRotaion.x));
-        //        if (Mathf.Abs(diffRotaion.x) < 0.004f)
-        //        {
-        //            canMoveRobot = true;
-        //        }
-        //    }
-        //    //if (hitInfo.transform.name == goalPoint.Find(goalPoint.name + "CenterPoint").transform.name)
-        //    //{
-        //    //    Debug.Log(goalPoint.Find(goalPoint.name + "CenterPoint").transform.name);
-        //    //    Debug.Log(hitInfo.transform.name);
-        //    //    Debug.Log(goalPoint.transform.Find(goalPoint.name + "CenterPoint").transform.name);
-        //    //    canMoveRobot = true;
-        //    //}
-        //}
+    }
+    public void RobotControllerNoObstacle()
+    {
+        Ray ray = new Ray(transform.position, this.transform.forward);
+        Debug.DrawRay(gameObject.transform.position, this.transform.forward * 30, Color.blue, 0.01f);
+        Debug.DrawRay(gameObject.transform.position, this.transform.right * 30, Color.blue, 0.01f);
+        Debug.DrawRay(gameObject.transform.position, - this.transform.right * 30, Color.blue, 0.01f);
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
+        {
+            if (hit.transform.name == goalPoint.transform.name)
+            {
+                Vector3 RobotFoward = this.transform.forward;
+                heading = goalPoint.position - this.transform.position;
+                Vector3 diffRotaion = heading.normalized - RobotFoward;
+                if (Mathf.Abs(diffRotaion.x) < 0.004f)
+                {
+                    canMoveRobot = true;
+                }
+            }
+        }
 
-        //Vector3 RobotFoward = this.transform.forward;
-        //Debug.Log(RobotFoward);
-        //Debug.Log(heading.normalized);
-        //Vector3 diffRotaion = (heading.normalized - RobotFoward)*100;
-        //if (canMoveRobot)
-        //{
-        //    this.transform.Rotate(0, 0, 0);
-        //    MoveRobotFoward();
-        //}
-        //else
-        //{
-        //    //if (diffRotaion > 0.001f)
-        //    //if (Mathf.Abs(diffRotaion.x) > 0.1f)
-        //    if (!canMoveRobot)
-        //    {
-        //        //Debug.Log(diffRotaion.x);
-        //        //Debug.Log(diffRotaion.z);
-        //        if (obstaclePoint != null)
-        //        {
-        //            //this.transform.Rotate(0, angleSpeed, 0);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        //Debug.Log(diffRotaion.x);
-        //        //Debug.Log(diffRotaion.z);
-        //        //this.transform.Rotate(0, 0, 0);
-        //        canMoveRobot = true;
-        //    }
-        //}
+        if (canMoveRobot)
+        {
+            this.transform.Rotate(0, 0, 0);
+            MoveRobotFoward();
+        }
+        else
+        {
+            //if (diffRotaion > 0.001f)
+            //if (Mathf.Abs(diffRotaion.x) > 0.1f)
+            if (!canMoveRobot)
+            {
+                this.transform.Rotate(0, RotateSpeed, 0);
+            }
+            else
+            {
+                //Debug.Log(diffRotaion.x);
+                //Debug.Log(diffRotaion.z);
+                this.transform.Rotate(0, 0, 0);
+                canMoveRobot = true;
+            }
+        }
     }
     public void MoveRobotFoward()
     {
