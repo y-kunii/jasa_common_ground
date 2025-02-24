@@ -7,7 +7,7 @@
 1. git clone https://github.com/y-kunii/jasa-unity-virtual-factory-model.git
 2. git switch Fix-EdgeTech-2024
 3. Unity Hubより「plugin-srcs」フォルダでUnityを立ち上げる
-![alt text](image.png)
+![alt text](image/image.png)
 ![alt text](image/SelectFolder.png)
 4. Hakoniwa.unityシーンを選択し、ダブルクリックでロードする（path：plugin-srcs/Assets/2024EdgeTech/Scene/Hakoniwa.unity）
 ![alt text](image/SceneLoad.png)
