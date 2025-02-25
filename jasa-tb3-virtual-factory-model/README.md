@@ -1,214 +1,195 @@
-# EdgeTech+ デモ　エッジサーバー
-
-  本リポジトリでは、EdgeTech+でデジタルツインに環境の構築手順と動作方法を記載する。
-
-## 動作環境
-
-  * Linux PC
-    * Ubuntu 22.04.4 LTS
-    * CPU: Intel(R) Core(TM) i5XXXXX CPU @ XXXXXXX
-    * Memory: 8GB
-    * ソフトウェア：
-      * RosProxy: Ubuntu(ROS2) humble
-
-## インストール手順
-  以下の順序で環境を構築する。
-  * [Ubuntuをインストールする]()
-  * [ROS2 humbleをインストールする]()
-  * [RosProxyの準備 Zenohのインストール]()
-  * [RosProxyの準備 RosProxyの作成]()
-  * [RosProxyの実行]()
-  * [Sample Programによる動作確認　SHMProxyの準備]()
-  * [Sample Programによる動作確認　Sampleプログラムの実行]()
-  * [カメラアプリの作成と実行]()
-  * [ボタンアプリの作成と実行]()
-
-### Ubuntuをインストールする]
-
-### ROS2 humbleをインストールする
-
-### RosProxyの準備 Zenohのインストール
-箱庭ブリッジが利用する Zenoh は、 [zenoh-c](https://github.com/eclipse-zenoh/zenoh-c) です。
-なお Zenoh のインストールには[Rust環境](https://www.rust-lang.org/ja/tools/install)が必要です。
-
-**バーチャル側とエッジ側、両方にインストールする必要があります。**
-
-1. ディレクトリ移動
-
-```
-cd third-party 
-```
-
-2. Build
-```
-mkdir -p build && cd build 
-cmake ../zenoh-c
-cmake --build . --config Release
-```
-
-3. Install
-
-Linux環境の場合は `sudo` が必要になることがあります。
-
-```
-cmake --build . --target install
-```
-
-成功すると、以下のファイルが作成されます。
-
-```
-% ls /usr/local/include
-zenoh.h                 zenoh_commons.h         zenoh_concrete.h        zenoh_configure.h       zenoh_macros.h          zenoh_memory.h
-```
-
-```
-% ls /usr/local/lib
-libzenohc.dylib
-```
-
-Linuxの場合は `libzenohc.so` が生成されます。
-`${LD_LIBRARY_PATH}` になければ、上記のパスを追加しておきます。
-
-### RosProxyの準備 RosProxyの作成
-RosProxyを作成するためには、最初に、箱庭PDUデータとして利用すROSメッセージ定義ファイルを準備する必要があります。ここでは、簡単のため、以下の標準ROSメッセージを利用する前提で説明をします。
-
-* geometry_msgs/Twist
-* std_msgs/Bool
-
-1. ディレクトリ移動
-
-```
-cd hakoniwa-bridge/third-party/hakonwia-ros2pdu
-```
-
-2. 箱庭PDUデータの作成
-
-今回は、ROS標準のメッセージを利用するため、箱庭PDUデータは既存のものを利用できます。
-もし独自のROSメッセージを利用する場合は、[こちら](https://github.com/toppers/hakoniwa-ros2pdu/tree/4c658f62b8aac986f9d6571853407d892e01b5cc?tab=readme-ov-file#%E5%89%8D%E6%BA%96%E5%82%99)の手順にしたって、作成してください。
-
-
-3. コンフィグファイルの作成
-
-本ファイルは、箱庭のUnityエディタ上で`Generate`すると自動生成されるものです。Unityを利用しない場合や、利用する場合でも全てのPDUデータをエッジ側と共有しない場合等は、手動で編集する必要があります。
-
-コンフィグファイルのファイル配置は以下としてください。
-
-hakoniwa-ros2pdu/config/custom.json
-
-
-定義例：
-
-https://github.com/toppers/hakoniwa-digital-twin/blob/main/sim/config/custom.json
-
-
-custom.jsonの定義については、[こちら](https://github.com/toppers/hakoniwa-core-cpp-client?tab=readme-ov-file#%E7%AE%B1%E5%BA%AD%E3%82%A2%E3%82%BB%E3%83%83%E3%83%88%E3%82%B3%E3%83%B3%E3%83%95%E3%82%A3%E3%82%B0)を参照ください。
-
-
-
-なお、method_typeには、SHMを必ず指定してください。
-また、class_nameとconv_class_nameは設定不要です。
-
-以下のコマンドを実行して RosProxyのコードを生成します。
-
-```
-bash create_proxy_ros_zenoh.bash ./config/custom.json 
-```
-
-成功すると、以下のファイルが作成されます。
-
-```
-# ls workspace/src/hako_ros_proxy/src/gen/
-hako_ros_proxy_com_ros2.cpp  hako_ros_proxy_com_zenoh.cpp
-```
-
-4. RosProxyのビルド
-
-```
-cd workspace
-```
-
-```
-colcon build --packages-select hako_ros_proxy
-```
-
-成功すると以下のログが出力されます。
-
-```
-Starting >>> hako_ros_proxy
-[Processing: hako_ros_proxy]                             
-Finished <<< hako_ros_proxy [35.4s]                       
-
-Summary: 1 package finished [36.0s]
-```
-
-### RosProxyの実行
-
-
-```
-source install/setup.bash 
-```
-
-```
-ros2 run hako_ros_proxy hako_ros_proxy_node 
-```
-
-### Sample Programによる動作確認　SHMProxyの準備
-
-箱庭コア機能の[インストール手順](https://github.com/toppers/hakoniwa-core-cpp-client?tab=readme-ov-file#%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E6%89%8B%E9%A0%86)に従って、コア機能をインストールします。
-
-1. ディレクトリ移動
-
-```
-cd third-party/hakoniwa-core-cpp-client
-```
-
-2. Build
-
-```
-bash build.bash
-```
-
-3. Install
-
-```
-bash install.bash
-```
-
-```
-cd hakoniwa-bridge/virtual
-```
-
-```
-bash build.bash
-```
-
-成功すると、以下のファイルが作成されます。
-
-```
-% ls cmake-build/shm-proxy/shm-proxy 
-cmake-build/shm-proxy/shm-proxy
-```
-ShmProxyの仕様：
-```
-Usage: ./cmake-build/shm-proxy/shm-proxy <asset_name> <config_path> <delta_time_msec> [master]
-```
-
-ShmProxyは、箱庭コンダクタを含んでいます。もし、箱庭コンダクタを独自に起動しない場合は、`master`オプションを利用することで、箱庭コンダクタを駆動できます。
-
-実行例：masterオプションを利用しない場合
-
-```
- ./cmake-build/shm-proxy/shm-proxy ShmProxy ../third-party/hakoniwa-ros2pdu/config/custom.json 20
-```
-
-実行例：masterオプションを利用する場合
-
-```
- ./cmake-build/shm-proxy/shm-proxy ShmProxy ../third-party/hakoniwa-ros2pdu/config/custom.json 20 master
-```
-
-### Sample Programによる動作確認　Sampleプログラムの実行
-
-### カメラアプリの作成と実行
-
-### ボタンアプリの作成と実行
+Turtlebot3セットアップ手順書
+はじめに
+JASAコモングラウンド委員会デジタルツインデモにおけるTurtlebot3のセットアップ手順書(備忘録)です。各設定値やバージョンは2024年11月のEdge Tech時点でのものとなります。
+
+事前準備
+リモートPC ※Ubuntu+ROS2セットアップ済
+OS：Ubuntu20.04.2 LTS
+ROS：ROS2 Foxy
+TurtleBot3 burger (Raspberry Pi 3B+) 本体 ※組み立て済
+バッテリー（デモ時は有線接続）
+microSDカード（16GB以上あれば問題無し）
+キーボード
+モニター+HDMIケーブル
+Wi-Fi環境
+セットアップ手順
+Turtlebot3用のイメージファイルをダウンロード【リモートPC】
+
+Turtlebot3のラズパイのバージョンを確認
+cat /proc/device-tree/model
+公式サイトからラズパイのバージョンに対応するイメージファイルをダウンロード [公式サイト](https://emanual.robotis.com/docs/en/platform/turtlebot3/sbc_setup/)
+microSDカードにイメージファイルを書き込み【リモートPC】
+
+Raspberry Pi Imager等でイメージファイルをmicroSDに書き込む。
+Raspberry Pi Imagerをインストール プライバシー保護のため、外部リンクが削除されました。
+microSDに書き込み
+microSDカードのパーティションサイズを変更【リモートPC】
+
+パーティションツールをインストール [GParted](https://gparted.org/download.php)
+パーティションサイズを変更
+microSDカードをTurtlebot3に差し込み、Turtlebot3を起動【Turtlebot3】
+
+Turtlebot3起動時にHDMIでモニターに接続しておくこと
+ID：ubuntu
+PW：turtlebot
+キーボード配列を変更【Turtlebot3】
+
+sudo dpkg-reconfigure keyboard-configuration
+Generic 105-key(Intl) PC → Japanese → Japanese → The default for the keyboard layout → No compose key
+再起動
+Wi-Fi設定【Turtlebot3】
+
+cd /etc/netplan/
+sudo vi 50-cloud-init.yaml
+『access-points:』の下の行に繋げたいWi-FiのSSIDを記入
+さらにその下の行に『password:[パスワードを記入]』を記入して保存し終了
+reboot
+ifconfig
+設定したWi-Fiに繋がっている事を確認する
+ifconfigが入っていない場合はsudo apt install net-toolsを実行
+OpenCRのセットアップ【Turtlebot3】
+
+sudo dpkg --add-architecture armhf
+sudo apt-get update
+sudo apt-get install libc6:armhf
+export OPENCR_PORT=/dev/ttyACM0
+export OPENCR_MODEL=burger_noetic
+rm -rf ./opencr_update.tar.bz2
+wget https://github.com/ROBOTIS-GIT/OpenCR-Binaries/raw/master/turtlebot3/ROS1/latest/opencr_update.tar.bz2
+tar -xvf opencr_update.tar.bz2
+cd ~/opencr_update
+./update.sh $OPENCR_PORT $OPENCR_MODEL.opencr
+Lidarの設定【Turtlebot3】
+
+echo 'export LDS_MODEL=LDS-01' >> ~./bashrc
+source ~/.bashrc
+ROS_HOSTNAME、ROS_MASTER_URIの設定【リモートPC/Turtlebot3】
+
+リモートPCとTurtlebot3を同一ネットワーク上に配置
+sudo vi ~/.bashrc
+以下の内容を追記
+ROS_MASTER_URI=http://[マスター側のIPアドレス]:11311
+ROS_HOSTNAME=[Turtlebot、リモートPCのIPアドレス]
+ROSトピックのリマッピング
+
+[参考リンク](https://github.com/toppers/hakoniwa-digital-twin/blob/main/real/robot/tb3/robot.launch.py)
+robot.launch.pyの格納先は
+/home/ubuntu/turtlebot3_ws/src/turtlebot3/turtlebot3_bringup/launch
+Turtlebot3に接続、操作【リモートPC】
+
+リモートPCとTurtlebot3を同一ネットワーク上に配置
+リモートPCからTurtlebot3に接続
+ssh ubuntu@[Turtlebot3のIPアドレス]
+PW：turtlebot
+Turtlebot3を起動
+ros2 launch turtlebot3_bringup robot.launch.py
+ROSトピックで操作(別のプロンプトを立ち上げて改めてSSH接続し実施)
+ros2 topic pub /RobotAvator_cmd_pos geometry_msgs/msg/Twist "{linear: {x: 0.1, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 0.0}}"
+このようにマークダウン形式に変換しました。何か他にお手伝いできることがあれば教えてください。1
+
+1: Document.docx
+
+
+
+AI で生成されたコンテンツは誤りを含む可能性があります。
+1 参照
+You said:
+このワードの内容をGithubのREADME.mdに変換してください。 コピペしたらそのまま適用できるよう変換をお願いします。
+
+Copilot said:
+もちろんです！以下は、ワード文書の内容をGitHubのREADME.md形式に変換したものです。
+
+# Turtlebot3セットアップ手順書
+
+## はじめに
+JASAコモングラウンド委員会デジタルツインデモにおけるTurtlebot3のセットアップ手順書(備忘録)です。各設定値やバージョンは2024年11月のEdge Tech時点でのものとなります。
+
+## 事前準備
+- リモートPC ※Ubuntu+ROS2セットアップ済
+  - OS：Ubuntu20.04.2 LTS
+  - ROS：ROS2 Foxy
+- TurtleBot3 burger (Raspberry Pi 3B+) 本体 ※組み立て済
+- バッテリー（デモ時は有線接続）
+- microSDカード（16GB以上あれば問題無し）
+- キーボード
+- モニター+HDMIケーブル
+- Wi-Fi環境
+
+## セットアップ手順
+1. **Turtlebot3用のイメージファイルをダウンロード【リモートPC】**
+   - Turtlebot3のラズパイのバージョンを確認
+     ```bash
+     cat /proc/device-tree/model
+     ```
+   - 公式サイトからラズパイのバージョンに対応するイメージファイルをダウンロード
+     [公式サイト](https://emanual.robotis.com/docs/en/platform/turtlebot3/sbc_setup/)
+
+2. **microSDカードにイメージファイルを書き込み【リモートPC】**
+   - Raspberry Pi Imager等でイメージファイルをmicroSDに書き込む。
+     - Raspberry Pi Imagerをインストール
+       *プライバシー保護のため、外部リンクが削除されました。*
+     - microSDに書き込み
+
+3. **microSDカードのパーティションサイズを変更【リモートPC】**
+   - パーティションツールをインストール
+     [GParted](https://gparted.org/download.php)
+   - パーティションサイズを変更
+
+4. **microSDカードをTurtlebot3に差し込み、Turtlebot3を起動【Turtlebot3】**
+   - Turtlebot3起動時にHDMIでモニターに接続しておくこと
+     - ID：ubuntu
+     - PW：turtlebot
+
+5. **キーボード配列を変更【Turtlebot3】**
+   ```bash
+   sudo dpkg-reconfigure keyboard-configuration
+Generic 105-key(Intl) PC → Japanese → Japanese → The default for the keyboard layout → No compose key
+再起動
+Wi-Fi設定【Turtlebot3】
+
+cd /etc/netplan/
+sudo vi 50-cloud-init.yaml
+『access-points:』の下の行に繋げたいWi-FiのSSIDを記入
+さらにその下の行に『password:[パスワードを記入]』を記入して保存し終了
+reboot
+ifconfig
+設定したWi-Fiに繋がっている事を確認する
+ifconfigが入っていない場合はsudo apt install net-toolsを実行
+OpenCRのセットアップ【Turtlebot3】
+
+sudo dpkg --add-architecture armhf
+sudo apt-get update
+sudo apt-get install libc6:armhf
+export OPENCR_PORT=/dev/ttyACM0
+export OPENCR_MODEL=burger_noetic
+rm -rf ./opencr_update.tar.bz2
+wget https://github.com/ROBOTIS-GIT/OpenCR-Binaries/raw/master/turtlebot3/ROS1/latest/opencr_update.tar.bz2
+tar -xvf opencr_update.tar.bz2
+cd ~/opencr_update
+./update.sh $OPENCR_PORT $OPENCR_MODEL.opencr
+Lidarの設定【Turtlebot3】
+
+echo 'export LDS_MODEL=LDS-01' >> ~./bashrc
+source ~/.bashrc
+ROS_HOSTNAME、ROS_MASTER_URIの設定【リモートPC/Turtlebot3】
+
+リモートPCとTurtlebot3を同一ネットワーク上に配置
+sudo vi ~/.bashrc
+以下の内容を追記
+ROS_MASTER_URI=http://[マスター側のIPアドレス]:11311
+ROS_HOSTNAME=[Turtlebot、リモートPCのIPアドレス]
+ROSトピックのリマッピング
+
+[参考リンク](https://github.com/toppers/hakoniwa-digital-twin/blob/main/real/robot/tb3/robot.launch.py)
+robot.launch.pyの格納先は
+/home/ubuntu/turtlebot3_ws/src/turtlebot3/turtlebot3_bringup/launch
+Turtlebot3に接続、操作【リモートPC】
+
+リモートPCとTurtlebot3を同一ネットワーク上に配置
+リモートPCからTurtlebot3に接続
+ssh ubuntu@[Turtlebot3のIPアドレス]
+PW：turtlebot
+Turtlebot3を起動
+ros2 launch turtlebot3_bringup robot.launch.py
+ROSトピックで操作(別のプロンプトを立ち上げて改めてSSH接続し実施)
+ros2 topic pub /RobotAvator_cmd_pos geometry_msgs/msg/Twist "{linear: {x: 0.1, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 0.0}}"
