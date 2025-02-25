@@ -27,8 +27,9 @@ JASAコモングラウンド委員会デジタルツインデモにおけるTurt
 2. **microSDカードにイメージファイルを書き込み【リモートPC】**
    - Raspberry Pi Imager等でイメージファイルをmicroSDに書き込む。
      - Raspberry Pi Imagerをインストール
-       *プライバシー保護のため、外部リンクが削除されました。*
      - microSDに書き込み
+
+     ![alt text](image/イメージファイル書き込み.gif)
 
 
 3. **microSDカードのパーティションサイズを変更【リモートPC】**
@@ -36,11 +37,15 @@ JASAコモングラウンド委員会デジタルツインデモにおけるTurt
      [GParted](https://gparted.org/download.php)
    - パーティションサイズを変更
 
+     ![alt text](image/パーティションサイズ変更.gif)
+
 
 4. **microSDカードをTurtlebot3に差し込み、Turtlebot3を起動【Turtlebot3】**
    - Turtlebot3起動時にHDMIでモニターに接続しておくこと
      - ID：ubuntu
      - PW：turtlebot
+
+    ![alt text](image/microSD差込口.png)
 
 
 5. **キーボード配列を変更【Turtlebot3】**
@@ -105,7 +110,9 @@ JASAコモングラウンド委員会デジタルツインデモにおけるTurt
    - 参考リンクを参照し、リマッピングの設定を行う。
    - robot.launch.pyの格納先は
      - /home/ubuntu/turtlebot3_ws/src/turtlebot3/turtlebot3_bringup/launch
-   - ※通常、Turtlebot3を操作するROSトピックは『cmd_vel』だが、箱庭デジタルツインが発行するROSトピックで操作できるようにするため。
+   - ※通常、Turtlebot3を操作するROSトピックは『cmd_vel』だが、
+   
+     　箱庭デジタルツインが発行するROSトピックで操作できるようにするため。
 
 11. **Turtlebot3に接続、操作【リモートPC】**
    - リモートPCとTurtlebot3を同一ネットワーク上に配置
