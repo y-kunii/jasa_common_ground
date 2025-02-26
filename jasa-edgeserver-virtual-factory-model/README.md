@@ -23,9 +23,13 @@
   * [カメラアプリの作成と実行]()
   * [ボタンアプリの作成と実行]()
 
-### Ubuntuをインストールする]
+### Ubuntuをインストールする
+
+インストールの際は最小構成ではなく通常構成でインストールすること
 
 ### ROS2 humbleをインストールする
+
+ROS2 hubleのインストールマニュアルを参考に[インストール](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html)を行ってください。
 
 ### RosProxyの準備 Zenohのインストール
 箱庭ブリッジが利用する Zenoh は、 [zenoh-c](https://github.com/eclipse-zenoh/zenoh-c) です。
@@ -210,5 +214,39 @@ ShmProxyは、箱庭コンダクタを含んでいます。もし、箱庭コン
 ### Sample Programによる動作確認　Sampleプログラムの実行
 
 ### カメラアプリの作成と実行
+カメラアプリをビルドする。
+
+```
+cd /home/jasa/work/hakoniwa-digital-twin/real/camera/workspace
+colcon build
+```
+
+カメラアプリを実行する
+
+```
+source ./install/setup.bash 
+ros2 run infra_camera camera_publish
+```
+
+**ROSを起動していない場合**
+```
+source /opt/ros/humble/setup.bash 
+```
 
 ### ボタンアプリの作成と実行
+ボタンアプリをビルドする。
+
+```
+cd /home/jasa/work/hakoniwa-digital-twin/real/button/infra_button
+colcon build
+```
+ボタンアプリを実行する
+```
+source ./install/setup.bash
+ros2 run infra_button button_publisher
+```
+**ROSを起動していない場合**
+```
+source /opt/ros/humble/setup.bash 
+```
+
