@@ -17,8 +17,8 @@ JASAコモングラウンド委員会では、工場の自律化に向けてイ�
 一方で、リアル空間に設置されたスイッチが押下された情報もバーチャル空間に連携され、  
 バーチャル空間側からロボットに前進・後退などの指令を送る仕組みです。  
 ![image](https://github.com/user-attachments/assets/6209cdc0-e27a-46d1-a470-1af760a91a84)  
+[Unity](jasa-unity-virtual-factory-model) - **Unity用プログラム構築手順**  
 [EdgeServer](jasa-edgeserver-virtual-factory-model) - **EdgeServer用プログラム構築手順**  
 [TB3](jasa-tb3-virtual-factory-model) - **TB3用プログラム構築手順**  
-[Unity](jasa-unity-virtual-factory-model) - **Unity用プログラム構築手順**  
-
+※Unityの手順で作成したcustom.jsonがEdgeServerの構築に必要になります。
 
