@@ -1,0 +1,7 @@
+[
+  {
+    "name": "custom_writer_connector_0",
+    "pdu_name": "SampleRobot_cmd_velPdu",
+    "method_name": "SampleRobotShmWriter0"
+  }
+]

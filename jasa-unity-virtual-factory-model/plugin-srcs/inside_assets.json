@@ -1,0 +1,34 @@
+[
+  {
+    "name": "Camera",
+    "pdu_writer_names": [],
+    "pdu_reader_names": [
+      "Camera_pose_dataPdu"
+    ],
+    "core_class_name": null
+  },
+  {
+    "name": "ButtonA",
+    "pdu_writer_names": [],
+    "pdu_reader_names": [
+      "ButtonA_button_sensorPdu"
+    ],
+    "core_class_name": null
+  },
+  {
+    "name": "ButtonB",
+    "pdu_writer_names": [],
+    "pdu_reader_names": [
+      "ButtonB_button_sensorPdu"
+    ],
+    "core_class_name": null
+  },
+  {
+    "name": "SampleRobot",
+    "pdu_writer_names": [
+      "SampleRobot_cmd_velPdu"
+    ],
+    "pdu_reader_names": [],
+    "core_class_name": null
+  }
+]

@@ -1,0 +1,17 @@
+[
+  {
+    "name": "custom_reader_connector_0",
+    "pdu_name": "Camera_pose_dataPdu",
+    "method_name": "CameraShmReader0"
+  },
+  {
+    "name": "custom_reader_connector_1",
+    "pdu_name": "ButtonA_button_sensorPdu",
+    "method_name": "ButtonAShmReader0"
+  },
+  {
+    "name": "custom_reader_connector_2",
+    "pdu_name": "ButtonB_button_sensorPdu",
+    "method_name": "ButtonBShmReader0"
+  }
+]

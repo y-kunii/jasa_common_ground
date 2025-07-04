@@ -1,0 +1,29 @@
+[
+  {
+    "name": "Camera_pose_dataPdu",
+    "class_name": "Hakoniwa.PluggableAsset.Communication.Pdu.Raw.RawPduReader",
+    "conv_class_name": "Hakoniwa.PluggableAsset.Communication.Pdu.Raw.RawPduReaderConverter",
+    "path": null,
+    "conv_path": null,
+    "pdu_config_name": "geometry_msgs/Pose",
+    "topic_message_name": null
+  },
+  {
+    "name": "ButtonA_button_sensorPdu",
+    "class_name": "Hakoniwa.PluggableAsset.Communication.Pdu.Raw.RawPduReader",
+    "conv_class_name": "Hakoniwa.PluggableAsset.Communication.Pdu.Raw.RawPduReaderConverter",
+    "path": null,
+    "conv_path": null,
+    "pdu_config_name": "std_msgs/Bool",
+    "topic_message_name": null
+  },
+  {
+    "name": "ButtonB_button_sensorPdu",
+    "class_name": "Hakoniwa.PluggableAsset.Communication.Pdu.Raw.RawPduReader",
+    "conv_class_name": "Hakoniwa.PluggableAsset.Communication.Pdu.Raw.RawPduReaderConverter",
+    "path": null,
+    "conv_path": null,
+    "pdu_config_name": "std_msgs/Bool",
+    "topic_message_name": null
+  }
+]

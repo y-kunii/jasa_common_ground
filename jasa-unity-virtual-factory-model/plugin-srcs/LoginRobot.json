@@ -1,0 +1,60 @@
+{
+  "robos": [
+    {
+      "roboname": "Camera",
+      "robotype": "Camera",
+      "pos": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "angle": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "roboname": "ButtonA",
+      "robotype": "ButtonA",
+      "pos": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "angle": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "roboname": "ButtonB",
+      "robotype": "ButtonB",
+      "pos": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "angle": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      }
+    },
+    {
+      "roboname": "SampleRobot",
+      "robotype": "SampleRobot",
+      "pos": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "angle": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      }
+    }
+  ]
+}
